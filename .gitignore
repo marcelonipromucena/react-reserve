@@ -25,7 +25,8 @@ coverage
 
 # Bower dependency directory (https://bower.io/)
 bower_components
-
+next.config.js
+now.json
 # node-waf configuration
 .lock-wscript
 
