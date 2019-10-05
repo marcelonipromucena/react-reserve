@@ -1,8 +1,9 @@
-import products from '../../static/products.json';
 import connectDb from '../../utils/connectDb';
+import Product from '../../models/Product';
 
 connectDb();
 
-export default (req, res) => {
-  res.status(200).json(products);
+export default async (req, res) => {
+  const products = await Product.find();
+  return res.status(200).json(products);
 };
