@@ -8,6 +8,19 @@ export default async (req, res) => {
     return res.status(401).send('No authorization token');
   }
   try {
-    jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
-  } catch (error) {}
+    const { userId } = jwt.verify(
+      req.headers.authorization,
+      process.env.JWT_SECRET,
+    );
+
+    const user = await User.findOne({ _id: userId });
+
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).send('User not found.');
+    }
+  } catch (error) {
+    res.status(403).send('Invalid token.');
+  }
 };
