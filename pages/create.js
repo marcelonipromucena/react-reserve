@@ -44,7 +44,6 @@ function CreateProduct() {
     } else {
       setProduct((prevState) => ({ ...prevState, [name]: value }));
     }
-    console.log(product);
   };
 
   const handleImageUpload = async () => {
