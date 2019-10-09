@@ -6,7 +6,7 @@ module.exports = {
     JWT_SECRET: '1240128H11Ç2O5U12U128419284',
     CLOUDINARY_URL:
       'https://api.cloudinary.com/v1_1/marcelonilima/image/upload',
-    STRIPE_SECRET_KEY: '<insert-stripe-secret-key>',
+    STRIPE_SECRET_KEY: 'sk_test_w7Jqjb6VJHNJuxMeHLUWkcuM00YTiRGcnR',
   },
   // webpack: (config, { dev }) => {
   //   // disable sourcemaps of webpack

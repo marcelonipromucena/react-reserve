@@ -3,13 +3,12 @@ import uuidv4 from 'uuid/v4';
 import jwt from 'jsonwebtoken';
 import Cart from '../../models/Cart';
 import Order from '../../models/Order';
-import calculateCarTotal from '../../utils/calculateCartTotal';
+import calculateCartTotal from '../../utils/calculateCartTotal';
 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
-export default async () => {
+export default async (req, res) => {
   const { paymentData } = req.body;
-
   try {
     // 1) Verify and get user id from token
     const { userId } = jwt.verify(
@@ -59,8 +58,20 @@ export default async () => {
       },
     );
     // 7) Add order data to database
-    // 8) Add order data to database
+
+    await new Order({
+      user: userId,
+      email: paymentData.email,
+      total: cartTotal,
+      products: cart.products,
+    }).save();
+    // 8) Clear products in cart
+    await Cart.findOneAndUpdate(
+      { _id: cart._id },
+      { $set: { products: [] } },
+    );
     // 9) Send back success (200) response
+    res.status(200).send('Checkout successful');
   } catch (error) {
     console.error(error);
     resizeBy.status(500).send('Error processing charge');
