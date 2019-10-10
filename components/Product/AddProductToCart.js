@@ -32,7 +32,6 @@ function AddProductToCart({ user, productId }) {
       await axios.put(url, payload, headers);
       setSuccess(true);
     } catch (error) {
-      console.log('error', error);
       catchErrors(error, window.alert);
     } finally {
       setLoading(false);
@@ -45,7 +44,7 @@ function AddProductToCart({ user, productId }) {
       min="1"
       value={quantity}
       placeholder="Quantity"
-      onChange={(event) => setQuantity(Number(event.target.value))}
+      onChange={event => setQuantity(Number(event.target.value))}
       action={
         user && success
           ? {

@@ -6,7 +6,6 @@ import baseUrl from '../utils/baseUrl';
 import axios from 'axios';
 
 function Account({ user, orders }) {
-  console.log(orders);
   return (
     <>
       <AccountHeader {...user} />
@@ -16,7 +15,7 @@ function Account({ user, orders }) {
   );
 }
 
-Account.getInitialProps = async (ctx) => {
+Account.getInitialProps = async ctx => {
   const { token } = parseCookies(ctx);
 
   if (!token) {

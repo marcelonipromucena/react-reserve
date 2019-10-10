@@ -16,8 +16,7 @@ class MyApp extends App {
       pageProps = await Component.getInitialProps(ctx);
     }
     if (!token) {
-      const isProtectedRoute =
-        ctx.pathname === '/account' || ctx.pathname === '/create';
+      const isProtectedRoute = ctx.pathname === '/account' || ctx.pathname === '/create';
       if (isProtectedRoute) {
         redirectUser(ctx, '/login');
       }
@@ -32,8 +31,7 @@ class MyApp extends App {
         const isAdmin = user && user.role === 'admin';
 
         //if authenticated but not of role 'admin' or 'root, then redirect
-        const isNotPermitted =
-          !(isRoot || isAdmin) && ctx.pathname === '/create';
+        const isNotPermitted = !(isRoot || isAdmin) && ctx.pathname === '/create';
         if (isNotPermitted) {
           redirectUser(ctx, '/');
         }
@@ -52,9 +50,8 @@ class MyApp extends App {
     window.addEventListener('storage', this.syncLogout);
   }
 
-  syncLogout = (event) => {
+  syncLogout = event => {
     if (event.key === 'logout') {
-      console.log('Logged out from storage');
       Router.push('/login');
     }
   };

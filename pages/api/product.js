@@ -1,5 +1,6 @@
 import Product from '../../models/Product';
 import connectDb from '../../utils/connectDb';
+import Cart from '../../models/Cart';
 
 connectDb();
 
@@ -30,9 +31,7 @@ async function handlePostRequest(req, res) {
 
   try {
     if (!name || !price || !description || !mediaUrl) {
-      return res
-        .status(422)
-        .send('Product missing one or more fields.');
+      return res.status(422).send('Product missing one or more fields.');
     }
 
     const product = await new Product({
@@ -49,6 +48,18 @@ async function handlePostRequest(req, res) {
 }
 async function handleDeleteRequest(req, res) {
   const { _id } = req.query;
-  await Product.findOneAndDelete({ _id });
-  return res.status(204).json({});
+  try {
+    await Product.findOneAndDelete({ _id });
+    await Cart.updateMany(
+      {
+        'products.product': _id,
+      },
+      { $pull: { products: { product: _id } } },
+    );
+
+    return res.status(204).json({});
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error deleting product');
+  }
 }

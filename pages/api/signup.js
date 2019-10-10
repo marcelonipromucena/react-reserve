@@ -15,13 +15,9 @@ export default async (req, res) => {
     // 1) Validate name/email/password
 
     if (!isLength(name, { min: 3, max: 10 })) {
-      return res
-        .status(422)
-        .send('Name must be 3-10 characters long.');
+      return res.status(422).send('Name must be 3-10 characters long.');
     } else if (!isLength(password, { min: 6 })) {
-      return res
-        .status(422)
-        .send('Password must be atleast 6 characters long.');
+      return res.status(422).send('Password must be atleast 6 characters long.');
     } else if (!isEmail(email)) {
       return res.status(422).send('E-mail must be valid.');
     }
@@ -30,9 +26,7 @@ export default async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user) {
-      return res
-        .status(422)
-        .send(`User already exists with email ${email}`);
+      return res.status(422).send(`User already exists with email ${email}`);
     }
     //3) -- if not, hash their password
     const hash = await bcrypt.hash(password, 10);
@@ -48,16 +42,11 @@ export default async (req, res) => {
 
     //5) Create token for the new user
 
-    const token = jwt.sign(
-      { userId: newUser._id },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: '7d',
-      },
-    );
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: '7d',
+    });
     res.status(201).json(token);
   } catch (error) {
-    console.log('Oops, there was an error.', error);
     res.status(500).send('Oops, there was an error.' + error);
   }
 };

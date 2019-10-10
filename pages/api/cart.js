@@ -29,10 +29,7 @@ async function handleGetRequest(req, res) {
     return res.status(401).send('No authorization token');
   }
   try {
-    const { userId } = jwt.verify(
-      req.headers.authorization,
-      process.env.JWT_SECRET,
-    );
+    const { userId } = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
 
     const cart = await Cart.findOne({ user: userId }).populate({
       path: 'products.product',
@@ -53,18 +50,12 @@ async function handlePutRequest(req, res) {
     return res.status(401).send('No authorization token');
   }
   try {
-    const { userId } = jwt.verify(
-      req.headers.authorization,
-      process.env.JWT_SECRET,
-    );
+    const { userId } = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
 
-    console.log(userId);
     //Get user cart based on userID
     const cart = await Cart.findOne({ user: userId });
     //check if product already exists in cart
-    const productExists = cart.products.some((doc) =>
-      ObjectId(productId).equals(doc.product),
-    );
+    const productExists = cart.products.some(doc => ObjectId(productId).equals(doc.product));
     //if so increment quantity by number provided to request
     if (productExists) {
       await Cart.findOneAndUpdate(
@@ -97,10 +88,7 @@ async function handleDeleteRequest(req, res) {
   }
 
   try {
-    const { userId } = jwt.verify(
-      req.headers.authorization,
-      process.env.JWT_SECRET,
-    );
+    const { userId } = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
 
     const cart = await Cart.findOneAndUpdate(
       { user: userId },
