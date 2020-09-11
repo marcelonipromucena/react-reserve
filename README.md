@@ -14,3 +14,4 @@ What this project contains
 - Business logic about e-commerces.
 - How to work with cookies in Node.
 - How to implement basic UI components using SemanticUI.
+- How to implement an integration with Cloudinary.
